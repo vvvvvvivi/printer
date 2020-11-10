@@ -16,7 +16,11 @@ async def on_message(message: discord.Message):
         return
 
     perms = message.channel.permissions_for(message.author)
-    if not perms.read_message_history or not perms.manage_messages:
+    if (
+        not perms.read_message_history
+        or not perms.send_messages
+        or not perms.manage_messages
+    ):
         return
 
     await message.publish()
