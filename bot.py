@@ -41,6 +41,7 @@ async def on_message(message: discord.Message):
                         "Don't use this bot.",
                     ]
                 ),
+                inline=False,
             )
 
             await message.channel.send(embed=embed)
