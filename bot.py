@@ -48,7 +48,7 @@ async def on_message(message: discord.Message):
 
         return
 
-    perms = message.channel.permissions_for(message.author)
+    perms = message.channel.permissions_for(message.guild.me)
     if (
         not perms.read_message_history
         or not perms.send_messages
