@@ -1,6 +1,9 @@
 import os
 
 import discord
+import dotenv
+
+dotenv.load_dotenv()
 
 client = discord.AutoShardedClient(
     intents=discord.Intents(guilds=True, guild_messages=True),
