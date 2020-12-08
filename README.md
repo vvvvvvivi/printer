@@ -2,13 +2,9 @@
 
 Auto publish bot for Discord.
 
-## Public instance
-
-Can be invited using <https://discord.com/oauth2/authorize?client_id=775831907790225490&permissions=76800&scope=bot>.
+Public instance is available at <https://discord.com/oauth2/authorize?client_id=775831907790225490&permissions=76800&scope=bot>.
 
 ## Running
-
-Daemonising is your own responsibility.
 
 ```sh
 python -m venv venv
