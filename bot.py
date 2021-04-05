@@ -41,22 +41,66 @@ async def on_message(message: discord.Message):
                         "Revoke the 'Manage Messages' permission from this bot in that channel's permission overrides.",
                         "",
                         "**How do I prevent some messages from being published?**",
-                        "Don't use this bot.",
+                        "Include `[no-publish]` anywhere in your message.",
+                        "",
+                        "**How do I prevent user messages from being published?**",
+                        "Give the bot 'manage webhooks' permission in that channel.",
                     ]
                 ),
                 inline=False,
             )
+
+            if message.guild:
+                channels = []
+                for channel in message.guild.channels:
+                    if channel.type != discord.ChannelType.news:
+                        continue
+
+                    perms = channel.permissions_for(message.guild.me)
+
+                    missing_perms = []
+                    for perm in (
+                        "read_message_history",
+                        "send_messages",
+                        "manage_messages",
+                    ):
+                        if not getattr(perms, perm):
+                            missing_perms.append(perm.replace("_", " "))
+
+                    if missing_perms:
+                        channels.append(
+                            f"{channel.mention}: missing perms ({', '.join(missing_perms)})"
+                        )
+                    elif perms.manage_webhooks:
+                        channels.append(f"{channel.mention}: bot only")
+                    else:
+                        channels.append(f"{channel.mention}: active")
+
+                embed.add_field(
+                    name="Channels",
+                    value="\n".join(channels)
+                    if channels
+                    else "This server does not have any announcement channels.",
+                    inline=False,
+                )
 
             await message.channel.send(embed=embed)
 
         return
 
     perms = message.channel.permissions_for(message.guild.me)
+
     if (
         not perms.read_message_history
         or not perms.send_messages
         or not perms.manage_messages
     ):
+        return
+
+    if not message.author.bot and perms.manage_webhooks:
+        return
+
+    if "[no-publish]" in message.content:
         return
 
     await message.publish()

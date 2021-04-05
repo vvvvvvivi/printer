@@ -23,4 +23,8 @@ Revoke the 'Manage Messages' permission from this bot in that channel's permissi
 
 ### How do I prevent some messages from being published?
 
-Don't use this bot.
+Include `[no-publish]` anywhere in your message.
+
+### How do I prevent user messages from being published?
+
+Give the bot 'Manage Webhooks' permission in that channel.
